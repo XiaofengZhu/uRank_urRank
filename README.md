@@ -16,3 +16,7 @@ Training code: main.py
 Evaluation code: evaluate.py
 
 5-fold results on the OHSUMED dataset (tested on a CPU) can be found in OHSUMED_uRank.txt and OHSUMED_urRank.txt
+
+
+
+This project is licensed under the terms of the MIT license.
