@@ -12,12 +12,6 @@ def get_pairwise_label_scores(labels):
 	return pairwise_label_scores
 
 
-def get_rl_pairwise_label_scores(labels):
-	expo2_labels = 2 ** labels
-	pairwise_label_scores = expo2_labels - tf.transpose(expo2_labels)
-	return pairwise_label_scores
-
-
 def get_softmax_pairwise_scores(predicted_scores):
 	exp_predicted_scores = 2 ** predicted_scores
 	exp_predicted_scores = tf.divide(exp_predicted_scores, tf.reduce_sum(exp_predicted_scores))
