@@ -1,5 +1,4 @@
-# ERR
-# https://github.com/skondo/evaluation_measures/blob/master/evaluations_measures.py
+
 """
 Module containing tensorflow ranking metrics.
 This module conforms to conventions used by tf.metrics.*.
@@ -214,14 +213,7 @@ def err(labels, predictions,
                   use_predicted_order=False):
   # pylint: disable=unused-argument
   """
-  Compute full normalized discounted cumulative gain (ndcg) based on predictions
-    ndcg = dcg_k/idcg_k, k is a cut off ranking postion
-    There are a few variants of ndcg
-    The dcg (discounted cumulative gain) formula used in 
-    twml.contrib.metrics.ndcg is
-    \sum_{i=1}^k \frac{2^{relevance\_score} -1}{\log_{2}(i + 1)}
-    k is the length of items to be ranked in a batch/query
-    Notice that whether k will be replaced with a fixed value requires discussions 
+  Compute Expected Reciprocal Rank
     The scores in predictions are transformed to order and relevance scores to calculate ndcg
     A relevance score means how relevant a DataRecord is to a particular query       
   Args:
@@ -312,61 +304,20 @@ def get_search_metric_fn(labels, predictions,
       ...
       return eval_metric_ops
 
-  where the returned eval_metric_ops is a dict of common evaluation metric
-  Ops for ranking. See `tf.estimator.EstimatorSpec
-  <https://www.tensorflow.org/api_docs/python/tf/estimator/EstimatorSpec>`_
-  for a description of eval_metric_ops. The graph_output is a the result
-  dict returned by build_graph. Labels and weights are tf.Tensors.
-
-  The following graph_output keys are recognized:
-    output:
-      the raw predictions. Required.
-    threshold:
-      Only used in SUPPORTED_BINARY_CLASS_METRICS
-      If the lables are 0s and 1s
-      A value between 0 and 1 used to threshold the output into a hard_output.
-      Defaults to 0.5 when threshold and hard_output are missing.
-      Either threshold or hard_output can be provided, but not both.
-    hard_output:
-      Only used in SUPPORTED_BINARY_CLASS_METRICS
-      A thresholded output. Either threshold or hard_output can be provided, but not both.
-
   Args:
     only used in pointwise learning-to-rank
     binary_metrics (list of String):
-      a list of metrics of interest. E.g. ['ctr', 'accuracy', 'rce']
-      These metrics are evaluated and reported to tensorboard *during the eval phases only*.
-      Supported metrics:
-        - accuracy (percentage of predictions that are correct)
-        - precision (true positives) / (true positives + false positives)
-        - recall (true positives) / (true positives + false negatives)
-
-      NOTE: accuracy / precision / recall apply to binary classification problems only.
-      I.e. a prediction is only considered correct if it matches the label. E.g. if the label
-      is 1.0, and the prediction is 0.99, it does not get credit.  If you want to use
-      precision / recall / accuracy metrics with soft predictions, you'll need to threshold
-      your predictions into hard 0/1 labels.
-
-      When binary_metrics is None (the default), it defaults to all supported metrics
-
+      a list of metrics of interest. E.g. ['accuracy']
     search_metrics (list of String):
       a list of metrics of interest. E.g. ['ndcg']
       These metrics are evaluated and reported to tensorboard *during the eval phases only*.
       Supported metrics:
         - ndcg
-
       NOTE: ndcg works for ranking-relatd problems.
       A batch contains all DataRecords that belong to the same query
-      If pair_in_batch_mode used in scalding -- a batch contains a pair of DataRecords
-      that belong to the same query and have different labels -- ndcg does not apply in here.
-
-      When search_metrics is None (the default), it defaults to all supported search metrics
-      currently only 'ndcg'
-
     ndcg_top_ks (list of integers):
       The cut-off ranking postions for a query
       When ndcg_top_ks is None or empty (the default), it defaults to [1, 3, 5, 10]
-
     use_binary_metrics:
       False (default)
       Only set it to true in pointwise learning-to-rank
