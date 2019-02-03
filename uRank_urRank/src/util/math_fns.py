@@ -20,28 +20,6 @@ def safe_div(numerator, denominator, name='safe_div'):
       math_ops.div(numerator, denominator),
       name=name)
 
-# # Copied from metrics_impl.py
-# # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/ops/metrics_impl.py#L216
-# def safe_div(numerator, denominator, name=None):
-#   """
-#   Example usage: calculating NDCG = DCG / IDCG to handle cases when
-#   IDCG = 0 returns 0 instead of Infinity 
-#   Do not use this dividing funciton unless it makes sense to your problem
-#   Divides two tensors element-wise, returns 0 if the denominator is <= 0.
-#   Args:
-#     numerator: a real `Tensor`.
-#     denominator: a real `Tensor`, with dtype matching `numerator`.
-#     name: Name for the returned op.
-#   Returns:
-#     0 if `denominator` <= 0, else `numerator` / `denominator`
-#   """
-#   t = math_ops.truediv(numerator, denominator)
-#   zero = array_ops.zeros_like(t, dtype=denominator.dtype)
-#   condition = math_ops.greater(denominator, zero)
-#   zero = math_ops.cast(zero, t.dtype)
-#   return array_ops.where(condition, t, zero, name=name)
-
-
 def cal_ndcg(label_scores, predicted_scores, top_k_int=1, use_predicted_order=False):
   """
   Calculate NDCG score for top_k_int ranking positions
