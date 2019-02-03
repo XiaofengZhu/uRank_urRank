@@ -168,25 +168,6 @@ def get_attrank_loss(labels, predicted_scores, weights=None):
   Returns:
     average loss
   """
-  # The authors immeplemented the following, which is basically listnet
-  # attention_labels = _get_attentions(labels)
-  # attention_labels = tf.reshape(attention_labels, [1, -1])
-  # predicted_scores = tf.reshape(predicted_scores, [1, -1])
-  # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=attention_labels,
-  #   logits=predicted_scores))
-
-  # The paper proposed the following
-  # attention_labels = _get_attentions(labels)
-  # # However the following line is wrong based on their statement
-  # # as _get_attentions can give 0 results when input < 0
-  # # and the result cannot be used in _get_attrank_cross_entropy
-  # # log(a_i^S)
-  # # attention_predicted_scores = _get_attentions(predicted_scores)
-  # loss = _get_attrank_cross_entropy(attention_labels, attention_predicted_scores)
-  # # the range of attention_predicted_scores is [0, 1)
-  # # this gives sigmoid [0.5, 0.732)
-  # # hence, it is not good to use in sigmoid_cross_entropy_with_logits either
-
   # Implemented the following instead
   # _get_attentions is applied to labels
   # softmax is applied to predicted_scores
