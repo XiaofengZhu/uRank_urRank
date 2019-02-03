@@ -202,29 +202,6 @@ def cal_idcg_ks(label_scores, top_k_int):
 
   return idcg_k
 
-
-def cal_dcg_ks_0(label_scores, predicted_scores, top_k_int):
-  """
-  Calculate swapped NDCG score in Lambda Rank for full/top k ranking positions
-  Args:
-    label_scores: a real `Tensor`.
-    predicted_scores: a real `Tensor`, with dtype matching label_scores
-    top_k_int: An int or an int `Tensor`. 
-  Returns:
-    a `Tensor` that holds swapped NDCG by .
-  """
-  sorted_labels, predicted_order, sorted_predictions = _get_ranking_orders(
-    label_scores, predicted_scores, top_k_int=top_k_int)
-
-  predicted_relevance = _get_relevance_scores(predicted_order)
-
-  cg_discount = _get_cg_discount(top_k_int)
-
-  # cg_discount is safe as a denominator
-  dcg_k = predicted_relevance / cg_discount
-
-  return dcg_k, sorted_predictions
-
 def cal_err(label_scores, predicted_scores, top_k_int=1, use_predicted_order=False):
   """
   Calculate NDCG score for top_k_int ranking positions
