@@ -12,11 +12,13 @@ SIGIR2019 Paper Submission
 
 Feature, label serialization code: prepare_data.py
 
-- An example of serialized data addressed in the paper can be found in folder data/OHSUMED/2/ (Fold 2 of the OHSUMED dataset)
+- An example of serialized data addressed in the paper can be found in folder: data/OHSUMED/2/ (Fold 2 of the OHSUMED dataset)
+- The original OHSUMED dataset is in folder: learning_to_rank_data_sets_OHSUMED
 
 Training code: main.py
 
 Evaluation code: evaluate.py
+
 
 
 
